@@ -29,3 +29,14 @@ jobs:
           npm test
       - name: Isolated engine tests
         run: npm run test:engine
+      - name: Windows installer smoke check
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          & ([scriptblock]::Create((Get-Content ./install.ps1 -Raw))) -Directory $PWD.Path -NoUpdate -NoStart -SkipBrowser
+      - name: macOS and Linux installer smoke check
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          bash -n install.sh
+          bash install.sh --directory "$PWD" --no-update --no-start --skip-browser

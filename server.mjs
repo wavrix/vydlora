@@ -134,17 +134,26 @@ server.on('upgrade', async (req, socket, head) => {
   socket.on('close', () => upstream.destroy());
 });
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+export async function startServer() {
+  if (server.listening) return server;
   if (process.env.LORA1_MANAGE_ENGINE !== '0') {
     engineHost = new EngineHost({ root, url: backend, token });
     try { await engineHost.start(); token = engineHost.token; }
     catch (error) { console.error(error.message); }
   }
-  server.listen(port, '127.0.0.1', () => console.log(`Vydlora       http://127.0.0.1:${port}\nLora 1 engine ${backend.origin}`));
+  try {
+    await new Promise((resolve, reject) => {
+      server.once('error', reject);
+      server.listen(port, '127.0.0.1', () => { server.off('error', reject); console.log(`Vydlora       http://127.0.0.1:${port}\nLora 1 engine ${backend.origin}`); resolve(); });
+    });
+  } catch (error) { await engineHost?.stop(); throw error; }
   let closing = false;
   for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => {
     if (closing) return; closing = true;
     await engineHost?.stop();
     server.closeAllConnections(); server.close(); process.exit(0);
   });
+  return server;
 }
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await startServer();

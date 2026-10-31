@@ -16,7 +16,29 @@ An open-source, local media workspace powered by the bundled **Lora 1 engine**. 
 
 Some platform features require your own signed-in session. Only collect content you have permission to access and save.
 
-## Requirements
+## One-command install and run
+
+**Windows 10/11:** open PowerShell and paste:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/wavrix/vydlora/main/install.ps1)))
+```
+
+**macOS / Debian / Ubuntu:** open Terminal and paste:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/wavrix/vydlora/main/install.sh)"
+```
+
+The installer gets Vydlora, installs missing Node.js, Python, Git and FFmpeg, prepares the engine packages and Chromium, then starts the app and opens your browser. Compatible installed tools are reused. Windows may show a permission prompt; macOS/Linux may ask for your computer password to install system packages. Linux needs `curl` to retrieve the script.
+
+Windows installs in `%LOCALAPPDATA%\Programs\Vydlora`; macOS/Linux installs in `~/vydlora`. Rerunning the command updates a clean installation and starts it again. It preserves private data and refuses to overwrite source edits or unrelated folders. MEGA and Telegram remain optional connections you configure yourself.
+
+Keep the terminal open while the app runs; use **Ctrl+C** to stop it. To start an existing installation without updating/reinstalling, use the restart command printed by the installer, or `npm start` from the install folder if Node is on your PATH.
+
+Advanced options: `-Directory`, `-NoUpdate`, `-NoStart`, `-NoBrowser` on Windows; `--directory`, `--no-update`, `--no-start`, `--no-browser` on macOS/Linux. Download the script to pass these options. Use the manual steps below for other Linux distributions.
+
+## Manual setup requirements
 
 Use a **Windows, macOS, or Linux computer** with:
 
@@ -29,7 +51,7 @@ Install [FFmpeg](https://ffmpeg.org/download.html) for the most complete media s
 
 The interface adapts to phone/tablet screens, but the engine needs a computer. By default, the app is available only on that computer.
 
-## Install and run
+## Manual install and run
 
 Open PowerShell on Windows or Terminal on macOS/Linux:
 
