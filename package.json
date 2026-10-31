@@ -1,0 +1,20 @@
+{
+  "name": "vydlora",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/wavrix/vydlora.git" },
+  "type": "module",
+  "description": "Vydlora media workspace, powered by the bundled Lora 1 engine.",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "setup": "node scripts/setup-engine.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:engine": "node scripts/test-engine.mjs",
+    "test:api": "node tests/engine-contract.mjs",
+    "engine": "node scripts/start-engine.mjs"
+  },
+  "engines": { "node": ">=22" }
+}

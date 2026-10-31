@@ -1,0 +1,61 @@
+/* The same compact controls and popovers are used throughout the workspace. */
+.dropdown-trigger {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  height:32px;
+  min-width:0;
+  padding:0 12px;
+  border:1px solid color-mix(in srgb,var(--text) 5%,transparent);
+  border-radius:8px;
+  background:var(--surface);
+  color:var(--text);
+  white-space:nowrap;
+  font-size:12px;
+  font-weight:500;
+  transition:background-color .12s
+}
+
+.dropdown-trigger:hover,.dropdown-trigger[aria-expanded=true] { background:var(--raised) }
+.dropdown-label { color:var(--muted);font-weight:400;flex-shrink:0 }
+.dropdown-trigger .dropdown-value { overflow:hidden;text-overflow:ellipsis }
+.dropdown-trigger>.icon { width:12px;height:12px;transition:transform .16s var(--curve-in-fast) }
+.dropdown-trigger[aria-expanded=true]>.icon { transform:rotate(180deg) }
+
+.menu-popover {
+  position:fixed;
+  z-index:300;
+  display:flex;
+  flex-direction:column;
+  min-width:154px;
+  max-width:calc(100vw - 24px);
+  max-height:calc(100dvh - 24px);
+  overflow:auto;
+  padding:8px;
+  border:1px solid var(--border-soft);
+  border-radius:8px;
+  background:var(--surface);
+  box-shadow:0 4px 10px #0004;
+  transform-origin:top right;
+  animation:menu-popover-in .16s var(--curve-in-fast)
+}
+
+.menu-popover [role^=menuitem] { display:flex;align-items:center;gap:10px;min-height:30px;padding:7px 4px;border-radius:5px;color:var(--text);font-size:12px;line-height:16px;white-space:nowrap;text-align:left;flex-shrink:0 }
+.menu-popover [role^=menuitem]>span { flex:1 }
+.menu-popover [role^=menuitem]>.icon { width:12px;height:12px }
+.menu-popover [role^=menuitem]:hover,.menu-popover [role^=menuitem]:focus-visible { background:var(--surface-hover) }
+.menu-popover .danger { color:var(--red) }
+.file-menu-divider { height:1px;min-height:1px;background:var(--border);margin:6px 0 }
+
+.menu-popover.in-modal { z-index:600 }
+.dropdown-select { display:inline-flex;min-width:0;max-width:100% }
+.dropdown-select>.dropdown-trigger { width:100% }
+.dropdown-select .dropdown-value { flex:1;text-align:left }
+.field .dropdown-select { display:flex;width:100% }
+.field .dropdown-trigger { min-height:38px }
+.toolbar-options>.dropdown-select { flex-shrink:1 }
+@keyframes menu-popover-in { from { opacity:0;transform:translateY(-4px) scale(.98) } to { opacity:1;transform:translateY(0) scale(1) } }
+@media(max-width:480px) { .toolbar-options>.dropdown-select { flex:1;min-width:0 } }
+@media(max-width:380px) { .toolbar-options .dropdown-label { display:none } }
+@media(prefers-reduced-motion:reduce) { .menu-popover { animation:none } .dropdown-trigger,.dropdown-trigger>.icon { transition:none } }

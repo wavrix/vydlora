@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vydlora rendering regression checks</title>
+<link rel="stylesheet" href="../public/styles.css">
+<link rel="stylesheet" href="../public/menus.css">
+<h1>Rendering regression checks</h1>
+<p>Serve the repository root over HTTP and open this page. These checks use the browser's native DOM.</p>
+<ol id="results"></ol>
+<script type="module">
+  import { patchContent } from '../public/render.js';
+  import { renderingChecks } from './rendering.browser.js';
+  import { modalChecks } from './modals.browser.js';
+  import * as modals from '../public/ui.js';
+  import * as menus from '../public/menus.js';
+  import * as library from '../public/library.js';
+  import { menuChecks } from './menus.browser.js';
+  const results = [...renderingChecks(document, patchContent), ...await modalChecks(document, modals), ...menuChecks(document, menus, library)];
+  for (const result of results) {
+    const item = document.createElement('li');
+    item.textContent = `${result.passed ? 'PASS' : 'FAIL'}: ${result.name}${result.error ? ` — ${result.error}` : ''}`;
+    document.querySelector('#results').append(item);
+  }
+  document.title = `${results.filter(result => result.passed).length}/${results.length} passed | Vydlora rendering`;
+</script>
+</html>

@@ -1,0 +1,10 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { EngineHost } from '../lib/engine-host.mjs';
+import { loadEnvironment } from '../lib/environment.mjs';
+const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+await loadEnvironment(root);
+const engine = new EngineHost({ root, url: process.env.LORA1_ENGINE_URL || 'http://127.0.0.1:8000', token: process.env.LORA1_AUTH_TOKEN || '', secure: false });
+const result = await engine.start();
+console.log(`Lora 1 engine: ${engine.url.origin}${result.managed ? '' : ' (already running)'}`);
+for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => { await engine.stop(); process.exit(0); });
